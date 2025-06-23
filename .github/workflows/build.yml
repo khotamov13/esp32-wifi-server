@@ -1,0 +1,28 @@
+name: Build ESP32 firmware
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Klonlash
+      uses: actions/checkout@v3
+
+    - name: PlatformIO o‘rnatish
+      run: pip install platformio
+
+    - name: SPIFS build qilish (html + png uchun)
+      run: platformio run --target buildfs
+
+    - name: Dastur (.bin) build qilish
+      run: platformio run
+
+    - name: Bin fayllarni yuklash
+      uses: actions/upload-artifact@v3
+      with:
+        name: esp32-bin
+        path: .pio/build/**/firmware*.bin
