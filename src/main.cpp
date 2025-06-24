@@ -3,7 +3,7 @@
 #include <DNSServer.h>
 #include "SPIFFS.h"
 
-const char* ssid = "Infix smart 8";
+const char* ssid = "InfixSmart8";
 const char* password = "12345678";
 const IPAddress apIP(192,168,4,1);
 const byte DNS_PORT = 53;
