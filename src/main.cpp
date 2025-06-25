@@ -4,6 +4,9 @@
 #include "SPIFFS.h"
 #include <esp_system.h>  // Xotira tekshiruvi uchun
 
+// Funksiya deklaratsiyasi (forward declaration)
+void blinkError();
+
 const char* ssid = "InfixSmart8";          // Wi-Fi nomi
 const char* password = "12345678";          // Wi-Fi paroli
 const IPAddress apIP(192, 168, 4, 1);       // AP IP manzili
