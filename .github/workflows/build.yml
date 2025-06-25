@@ -14,10 +14,18 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v3
 
+      - name: Cache PlatformIO
+        uses: actions/cache@v3
+        with:
+          path: ~/.platformio
+          key: ${{ runner.os }}-pio-${{ hashFiles('**/platformio.ini') }}
+          restore-keys: ${{ runner.os }}-pio-
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
+          cache: 'pip'
 
       - name: Install PlatformIO
         run: pip install platformio
@@ -29,7 +37,20 @@ jobs:
         run: platformio run --target buildfs
 
       - name: Check output files
-        run: ls -l .pio/build/esp32s3
+        run: |
+          ls -l .pio/build/esp32s3/firmware.bin
+          ls -l .pio/build/esp32s3/spiffs.bin
+          ls -l .pio/build/esp32s3/bootloader.bin
+          ls -l .pio/build/esp32s3/partitions.bin
+
+      - name: Check build status
+        run: |
+          if [ -f .pio/build/esp32s3/firmware.bin ]; then
+            echo "Build muvaffaqiyatli!"
+          else
+            echo "XATO: Build muvaffaqiyatsiz!"
+            exit 1
+          fi
 
       - name: Upload firmware, spiffs, bootloader, and partitions
         uses: actions/upload-artifact@v4
